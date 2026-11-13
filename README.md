@@ -95,31 +95,40 @@ qa-mainframe-testing-lab/
 
 ## Tecnologías y herramientas
 
-El laboratorio incorporará progresivamente las siguientes tecnologías y herramientas:
+El laboratorio incorporará progresivamente diferentes tecnologías y herramientas para el diseño, desarrollo, ejecución y automatización de pruebas.
+
+### Control de versiones
+
+- **Git:** herramienta utilizada para el control de versiones y seguimiento de los cambios del proyecto.
+- **GitHub:** plataforma utilizada para alojar el repositorio, documentar los avances y gestionar el desarrollo del laboratorio.
 
 ### Entorno Mainframe
 
-- COBOL: lenguaje utilizado para desarrollar y analizar programas Mainframe.
-- CICS: entorno de procesamiento de transacciones online.
-- JCL: lenguaje de control de trabajos batch.
-- DB2: sistema de gestión de bases de datos relacionales.
+Las siguientes tecnologías forman parte del entorno que se abordará progresivamente mediante escenarios y componentes ficticios:
+
+- **COBOL:** lenguaje utilizado para desarrollar y analizar programas Mainframe.
+- **CICS:** entorno de procesamiento de transacciones online.
+- **JCL:** lenguaje de control de trabajos batch.
+- **DB2:** sistema de gestión de bases de datos relacionales.
 
 ### Testing y automatización
 
-- Python: desarrollo de scripts y herramientas de automatización.
-- Pytest: framework para implementar y ejecutar pruebas automatizadas.
-- CSV, JSON y YAML: formatos para organizar datos y configuraciones de prueba.
+Se prevé incorporar las siguientes herramientas para implementar y automatizar pruebas:
 
-### Control de versiones y CI/CD
+- **Python:** desarrollo de scripts y herramientas de automatización.
+- **Pytest:** framework para implementar y ejecutar pruebas automatizadas.
+- **CSV, JSON y YAML:** formatos para organizar datos y configuraciones de prueba.
 
-- Git: control de versiones del proyecto.
-- GitHub: alojamiento y gestión del repositorio.
-- GitHub Actions: automatización futura de validaciones y pruebas mediante workflows.
+### Integración continua y CI/CD
+
+- **GitHub Actions:** herramienta prevista para automatizar futuras validaciones, controles y ejecuciones de pruebas mediante workflows.
 
 ### Inteligencia Artificial
 
-- OpenAI API: integración futura de capacidades de IA para asistir en actividades de QA.
-- Streamlit o FastAPI: alternativas previstas para desarrollar una aplicación propia de asistencia de testing.
+Se evaluarán e incorporarán progresivamente herramientas para desarrollar funcionalidades de asistencia de QA:
+
+- **OpenAI API:** integración futura de capacidades de Inteligencia Artificial para asistir en actividades de testing.
+- **Streamlit o FastAPI:** alternativas previstas para desarrollar una aplicación propia de asistencia de testing.
 
 ## Asistente de QA basado en Inteligencia Artificial
 
@@ -205,8 +214,8 @@ El desarrollo del laboratorio se realizará de manera progresiva, incorporando n
 
 | Etapa | Descripción | Estado |
 |---|---|---|
-| 0 | Preparación del entorno y estructura del repositorio | En progreso |
-| 1 | Fundamentos de Mainframe QA y diseño de casos de prueba | Pendiente |
+| 0 | Preparación del entorno y estructura del repositorio | Completada |
+| 1 | Fundamentos de Mainframe QA y diseño de casos de prueba | En progreso |
 | 2 | Introducción a Python y Pytest para testing | Pendiente |
 | 3 | Desarrollo de pruebas automatizadas para el laboratorio | Pendiente |
 | 4 | Construcción del asistente de QA mediante prompts y documentación | Pendiente |
@@ -217,23 +226,44 @@ Las etapas se desarrollarán progresivamente, documentando los avances y verific
 
 ## Estado actual del proyecto
 
-El proyecto se encuentra en su etapa inicial de preparación y organización.
+El proyecto se encuentra en una etapa de construcción progresiva del laboratorio de QA Mainframe.
+
+Actualmente, se completó la preparación inicial del repositorio y se desarrolló una primera colección de casos de prueba funcionales para un escenario bancario ficticio implementado conceptualmente mediante COBOL Batch.
 
 ### Actividades completadas
 
 - Creación del repositorio público en GitHub.
 - Configuración del entorno local de desarrollo.
-- Creación de la estructura inicial de directorios.
-- Elaboración de la primera versión del README principal.
+- Creación de la estructura principal de directorios.
+- Elaboración del README principal.
+- Definición de un escenario bancario ficticio para pruebas de COBOL Batch.
+- Definición del layout de entrada de movimientos bancarios de 30 posiciones.
+- Diseño y revisión documental de 12 casos de prueba funcionales para el programa `BNKTRN01`.
+- Documentación de escenarios positivos, negativos y de límites.
+- Definición de criterios para diferenciar pruebas diseñadas, simuladas y ejecutadas realmente.
+
+### Actividades en progreso
+
+- Consolidación de la documentación de los casos de prueba funcionales.
+- Revisión y actualización de la documentación general del proyecto.
+- Organización de los criterios y estándares de testing que se utilizarán en el laboratorio.
 
 ### Actividades pendientes
 
-- Revisar y aprobar la primera versión del README principal.
-- Incorporar archivos de configuración iniciales.
-- Diseñar los primeros casos de prueba Mainframe.
-- Desarrollar ejemplos y escenarios con datos ficticios.
+- Diseñar casos de prueba unitarios y de validación.
+- Desarrollar el programa COBOL Batch `BNKTRN01`.
+- Preparar datos ficticios para las pruebas.
+- Incorporar ejemplos de JCL y estructuras DB2.
+- Diseñar escenarios de integración y regresión.
 - Implementar progresivamente pruebas automatizadas con Python y Pytest.
 - Incorporar las funcionalidades de asistencia basadas en Inteligencia Artificial.
+- Configurar futuras validaciones automatizadas mediante GitHub Actions.
+
+### Consideraciones sobre el estado de ejecución
+
+Los 12 casos funcionales actuales se encuentran diseñados y documentados. Su revisión documental no implica que hayan sido ejecutados.
+
+Las ejecuciones reales se registrarán únicamente cuando exista un entorno disponible, se hayan realizado las pruebas y se cuente con evidencias verificables.
 
 El estado de las actividades se actualizará a medida que se desarrollen, documenten y verifiquen nuevas funcionalidades.
 

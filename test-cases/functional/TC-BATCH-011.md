@@ -2,14 +2,35 @@
 
 ## 1. Objetivo
 
-Verificar que el programa `BNKTRN01` rechace los registros cuya fecha de transacción contenga caracteres no numéricos, incumpliendo el formato establecido `AAAAMMDD`.
+Verificar que el programa COBOL Batch `BNKTRN01` rechace un movimiento bancario cuya fecha de transacción contenga caracteres no numéricos, incumpliendo el formato establecido `AAAAMMDD`.
 
-## 2. Precondiciones
+## 2. Diseño del registro de entrada
 
-- El programa `BNKTRN01` deberá validar que la fecha de transacción tenga exactamente 8 caracteres numéricos.
-- El archivo de entrada deberá utilizar el layout definido para los movimientos bancarios.
-- La cuenta ficticia `0001234567` deberá existir en el maestro de cuentas.
-- Los campos de cuenta, importe y tipo de movimiento deberán contener valores válidos.
+El programa recibirá un archivo secuencial QSAM de longitud fija. Cada registro tendrá exactamente 30 posiciones.
+
+La definición del archivo será:
+
+- Organización: secuencial (QSAM).
+- Formato de registro: `RECFM=FB`.
+- Longitud lógica del registro: `LRECL=30`.
+- Longitud del registro en COBOL: `PIC X(30)`.
+
+### 2.1 Layout del registro
+
+| Campo | Posición inicial | Posición final | Longitud | Formato COBOL | Descripción |
+|---|---:|---:|---:|---|---|
+| ACCOUNT-NUMBER | 1 | 10 | 10 | PIC X(10) | Número de cuenta |
+| AMOUNT | 11 | 21 | 11 | PIC 9(9)V99 | Importe con dos decimales implícitos |
+| TRANSACTION-DATE | 22 | 29 | 8 | PIC X(8) | Fecha en formato AAAAMMDD |
+| TRANSACTION-TYPE | 30 | 30 | 1 | PIC X | Tipo de movimiento |
+
+### 2.2 Validaciones aplicables
+
+- `ACCOUNT-NUMBER`: debe contener exactamente 10 dígitos y existir en el maestro de cuentas ficticio.
+- `AMOUNT`: debe contener exactamente 11 dígitos, ser numérico y ser mayor que cero.
+- `TRANSACTION-DATE`: debe contener exactamente 8 dígitos numéricos en formato AAAAMMDD.
+- `TRANSACTION-DATE`: una vez validado el formato numérico, debe representar una fecha calendario existente.
+- `TRANSACTION-TYPE`: debe contener `C` (crédito) o `D` (débito).
 
 ## 3. Datos de prueba
 
@@ -19,47 +40,58 @@ Verificar que el programa `BNKTRN01` rechace los registros cuya fecha de transac
 | AMOUNT | `00000125050` |
 | TRANSACTION-DATE | `2026A015` |
 | TRANSACTION-TYPE | `C` |
-| Longitud esperada | 30 posiciones |
-| Longitud recibida | 30 posiciones |
 
-### Registro de entrada
+**Registro completo de 30 posiciones:**
 
-```text
-0001234567000001250502026A015C
-```
+`0001234567000001250502026A015C`
 
-**Longitud del registro:** 30 caracteres.
+**Interpretación de la fecha:** `2026A015` contiene ocho caracteres, pero la quinta posición del campo contiene la letra `A` en lugar de un dígito numérico. Por lo tanto, incumple el formato `AAAAMMDD`.
 
-El campo `TRANSACTION-DATE` contiene una letra (`A`) en lugar de un dígito numérico, por lo que incumple el formato `AAAAMMDD`.
+**Interpretación del importe:** `00000125050` representa 1.250,50, ya que los dos decimales son implícitos.
 
-## 4. Pasos de ejecución
+**Precondiciones:**
+
+- El maestro de cuentas ficticio debe estar disponible para el procesamiento.
+- La cuenta `0001234567` debe existir en el maestro de cuentas.
+- Los campos de cuenta, importe y tipo de movimiento deben cumplir con sus respectivas reglas de validación.
+- El rechazo debe producirse exclusivamente por la presencia de un carácter no numérico en la fecha.
+
+## 4. Pasos de prueba
 
 1. Preparar el maestro de cuentas ficticio con la cuenta `0001234567`.
-2. Crear el archivo de entrada con el registro definido para esta prueba.
-3. Verificar que el registro tenga exactamente 30 caracteres.
-4. Ejecutar el programa `BNKTRN01`, una vez que esté implementado.
-5. Inspeccionar los archivos de salida de registros aceptados y rechazados.
-6. Verificar que el registro sea rechazado por contener caracteres no numéricos en la fecha.
+2. Preparar el archivo de entrada con el registro definido en este caso.
+3. Verificar que el archivo esté definido como secuencial QSAM, con `RECFM=FB` y `LRECL=30`.
+4. Verificar que el registro de entrada contenga exactamente 30 posiciones.
+5. Verificar que el campo `TRANSACTION-DATE` contenga ocho caracteres y que incluya la letra `A`.
+6. Ejecutar el programa `BNKTRN01` cuando se encuentre implementado y disponible para pruebas.
+7. Revisar la salida de movimientos aceptados.
+8. Revisar la salida de registros rechazados y los contadores del procesamiento.
+9. Verificar que el motivo de rechazo identifique el formato no numérico de la fecha.
 
-## 5. Resultado esperado
+## 5. Resultados esperados
 
-- Cantidad de registros procesados: 1.
-- Cantidad de registros aceptados: 0.
-- Cantidad de registros rechazados: 1.
-- Motivo del rechazo: formato de fecha inválido por contener caracteres no numéricos (`2026A015`).
-- El registro no deberá procesarse como un movimiento válido.
-- No deberán generarse movimientos aceptados a partir de este registro.
+- El registro debe ser leído correctamente por el programa.
+- La cuenta debe superar las validaciones de formato y existencia.
+- El importe debe superar la validación de formato numérico y de valor mayor que cero.
+- El tipo de movimiento debe superar su validación.
+- El programa debe identificar que `2026A015` contiene un carácter no numérico.
+- La fecha debe ser rechazada por incumplimiento del formato numérico `AAAAMMDD`.
+- No debe intentarse una conversión o validación calendario de la fecha antes de comprobar que sus ocho caracteres sean numéricos.
+- El registro debe aparecer en el archivo de registros rechazados, con el motivo correspondiente.
+- El registro no debe aparecer en el archivo de movimientos aceptados.
+- La cantidad de registros leídos debe ser 1.
+- La cantidad de movimientos aceptados debe ser 0.
+- La cantidad de movimientos rechazados debe ser 1.
+- No deben registrarse errores de validación en los demás campos.
 
-## 6. Resultado obtenido
-
-Pendiente de ejecución.
-
-## 7. Estado
-
-**Diseñado. No ejecutado.**
-
-## 8. Evidencias
+## 6. Resultados obtenidos
 
 Pendientes de ejecución.
 
-No existen evidencias de ejecución real para este caso de prueba.
+## 7. Estado
+
+Diseñado. No ejecutado.
+
+## 8. Evidencias
+
+Pendientes. No existen evidencias de ejecución real en esta etapa.
